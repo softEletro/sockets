@@ -6,6 +6,6 @@ import java.net.UnknownHostException;
 public class RodaCliente {
 	public static void main(String[] args) 
 			throws UnknownHostException,	IOException {
-		new Cliente("10.180.199.204", 4333).executa();
+		new Cliente("192.168.15.23", 45455).executa();
 	}
 }

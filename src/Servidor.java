@@ -11,6 +11,20 @@ public class Servidor {
 
 	private int porta;
 	private List<Socket> clientes;
+        
+        private String perguntaQuiz;
+        private String respostaQuiz;
+        
+        
+        public void EnviarPergunta(String pergunta, String resposta)
+        {
+            perguntaQuiz = pergunta;
+            respostaQuiz = resposta;
+            this.distribuiMensagem(null, pergunta);
+            
+            
+        
+        }
 
 	public Servidor(int porta) {
 		this.porta = porta;
@@ -40,10 +54,37 @@ public class Servidor {
 				try {
 					PrintStream ps = new PrintStream(cliente.getOutputStream());
 					ps.println(msg);
+                                       if(verificarResposta(ps,msg)){
+                                           
+                                           for (Socket clienteResp : this.clientes)
+                                           {
+                                               
+                                               new PrintStream(clienteResp.getOutputStream()).println("Resposta Correta.\n Parabéns : " + clienteQueEnviou.getInetAddress().toString());
+                                           }
+                                           
+                                       }
+                                        
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
 		}
 	}
+        
+        public boolean verificarResposta(PrintStream ps, String msg)
+        {
+            
+            if(!(respostaQuiz.equals(null) || respostaQuiz.equals("")))
+            {
+                boolean respostaCorreta = respostaQuiz.equals(msg);
+                if(respostaCorreta)
+                {
+                    respostaQuiz = "";
+                }
+                
+                return respostaCorreta;
+            }
+            
+            return false;
+        }
 }

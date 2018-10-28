@@ -1,4 +1,6 @@
 
+import java.io.IOException;
+import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,10 +19,18 @@ public class Quiz extends javax.swing.JFrame {
     /**
      * Creates new form Quiz
      */
-    public Quiz() {
+    Servidor ser;
+    public Quiz(Servidor servidor) {
         initComponents();
         equacao.setEditable(false);
+        ser = servidor;
     }
+    public Quiz ()
+    {
+        String teste = (respostaCli.getText());
+        
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -118,7 +128,8 @@ public class Quiz extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BotaoEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoEnviarActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:           
+       ser.EnviarPergunta(equacao.getText(), respostaCli.getText());       
     }//GEN-LAST:event_BotaoEnviarActionPerformed
 
     private void equacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_equacaoActionPerformed
@@ -132,7 +143,9 @@ public class Quiz extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String args[]) throws IOException {
+        Servidor ser;
+        ser= new Servidor (45455);
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -159,9 +172,11 @@ public class Quiz extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Quiz().setVisible(true);
+                
+                new Quiz(ser).setVisible(true);
             }
         });
+        ser.executa();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -172,4 +187,5 @@ public class Quiz extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField respostaCli;
     // End of variables declaration//GEN-END:variables
+
 }
